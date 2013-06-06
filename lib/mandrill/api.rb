@@ -68,6 +68,10 @@ module Mandrill
       req_endpoint = "#{API_URL}/#{@config[:api_version]}/#{api_method.to_s}/#{args.first.to_s}.#{@config[:format]}"
       req_body = {:key => @api_key}
       req_body.merge!(args.last) if args.last.is_a?(Hash)
+      #ensure request is in json format if required
+      if @config[:format] == "json"
+        req_body = req_body.to_json
+      end
       @response = HTTPI.post(req_endpoint, req_body.to_json.to_s)
     end
     
